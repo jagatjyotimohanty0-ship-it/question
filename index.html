@@ -431,33 +431,55 @@ function submitQuiz() {
     }
 
     let score = 0;
+    const answers = [];
 
     for (let i = 0; i < questions.length; i++) {
 
-        const selected =
-            document.querySelector(
-                `input[name="question${i}"]:checked`
-            );
+        const selected = document.querySelector(
+            `input[name="question${i}"]:checked`
+        );
 
         if (!selected) {
             alert(`Please answer Question ${i + 1}.`);
             return;
         }
 
-        if (Number(selected.value) === questions[i].correct) {
+        const selectedIndex = Number(selected.value);
+
+        // Save the actual selected answer text
+        answers.push(questions[i].options[selectedIndex]);
+
+        // Calculate score
+        if (selectedIndex === questions[i].correct) {
             score++;
         }
-
     }
 
+    // Google Apps Script URL
+    const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyb-Wcq_s_Iv0WG-75Sm3c_tgFRp_e_JS2JpLaeScI_eeEKWcZCpdsVDgNFC2hygTuGUg/exec";
 
+    // Data to send to Google Sheet
+    const data = {
+        name: name,
+        answers: answers,
+        score: score
+    };
+
+    // Send data to Google Sheet
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).catch(error => {
+        console.log("Sheet error:", error);
+    });
+
+    // Show result
     document.getElementById("quizCard").style.display = "none";
-
     document.getElementById("result").style.display = "block";
 
     document.getElementById("score").textContent =
         `${score} / ${questions.length}`;
-
 
     let message = "";
 
@@ -472,7 +494,6 @@ function submitQuiz() {
     }
 
     document.getElementById("message").textContent = message;
-
 }
 
 </script>
