@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Relationship Quiz</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 25px 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.question {
+    margin-bottom: 28px;
+}
+
+.question h3 {
+    font-size: 17px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.option {
+    display: block;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f7f7f7;
+}
+
+.option input {
+    margin-right: 8px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
+    background: #222;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #444;
+}
+
+#result {
+    display: none;
+    text-align: center;
+}
+
+.score {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.result-message {
+    color: #555;
+    line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card" id="quizCard">
+
+        <h1>Relationship Quiz</h1>
+
+        <p class="subtitle">
+            Let's see how well you understand our relationship.
+        </p>
+
+        <label for="name">Enter your name</label>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Your name"
+            required
+        >
+
+        <div id="questions"></div>
+
+        <button onclick="submitQuiz()">
+            Submit Quiz
+        </button>
+
+    </div>
+
+
+    <div class="card" id="result">
+
+        <h1>Your Result</h1>
+
+        <div class="score" id="score"></div>
+
+        <p class="result-message" id="message"></p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+    question: "Long distance me mere liye sabse important cheez kya hai?",
+    options: [
+        "Regular baat karna",
+        "Trust aur understanding",
+        "Har waqt connected rehna",
+        "Chhoti-chhoti efforts"
+    ],
+    correct: 1
+},
+
+{
+    question: "Jab main emotionally low hota hoon, mujhe tumse sabse zyada kya chahiye hota hai?",
+    options: [
+        "Advice",
+        "Bas meri baat sunna",
+        "Mujhe distract karna",
+        "Thoda space dena"
+    ],
+    correct: 1
+},
+
+{
+    question: "Tumhare according hamare relationship ki sabse strong cheez kya hai?",
+    options: [
+        "Love",
+        "Trust",
+        "Understanding",
+        "Ek dusre ke liye efforts"
+    ],
+    correct: 2
+},
+
+{
+    question: "Agar hamari kisi baat par misunderstanding ho jaye, to main kya prefer karunga?",
+    options: [
+        "Thodi der baad baat karna",
+        "Same time par solve karna",
+        "Pehle tum mujhe samjho",
+        "Situation ke hisaab se decide karna"
+    ],
+    correct: 1
+},
+
+{
+    question: "Long distance me mujhe sabse zyada kis cheez ki kami feel hoti hogi?",
+    options: [
+        "Tumhare saath physically time spend karna",
+        "Randomly mil pana",
+        "Saath me normal daily moments enjoy karna",
+        "Tumhare paas hone ka feeling"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar tumhara mood bahut kharab ho aur tum mujhse baat nahi karna chaho, main kya karunga?",
+    options: [
+        "Tumhe space dunga",
+        "Baar-baar check karunga",
+        "Tumhe cheer up karne ki try karunga",
+        "Bas silently available rahunga"
+    ],
+    correct: 3
+},
+
+{
+    question: "Mere liye relationship me reassurance ka kya importance hai?",
+    options: [
+        "Bahut zyada",
+        "Kabhi-kabhi zaroori",
+        "Situation par depend karta hai",
+        "Words se zyada actions important hain"
+    ],
+    correct: 0
+},
+
+{
+    question: "Agar ek din hum dono bahut busy ho aur properly baat na ho paye, to main kya feel karunga?",
+    options: [
+        "Mujhe bura lagega",
+        "Main samajhne ki koshish karunga",
+        "Main tumhe miss karunga but understand karunga",
+        "Mujhe bas ek chhota sa message bhi enough lagega"
+    ],
+    correct: 2
+},
+
+{
+    question: "Tumhare according main tumhari life me kya banna chahta hoon?",
+    options: [
+        "Tumhara partner",
+        "Tumhara best friend",
+        "Tumhara safe person",
+        "Ye sab"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar future me hamari life difficult phase se guzre, main relationship ke liye kya karunga?",
+    options: [
+        "Problems ko milkar solve karunga",
+        "Tumhara support karunga",
+        "Relationship ko priority dunga",
+        "Give up karne ke bajaye patience rakhunga"
+    ],
+    correct: 0
+},
+
+{
+    question: "Mere liye 'I love you' se zyada important kya ho sakta hai?",
+    options: [
+        "Consistency",
+        "Understanding",
+        "Actions",
+        "Har situation me saath rehna"
+    ],
+    correct: 2
+},
+
+{
+    question: "Agar tum apne baare me kuch negative feel kar rahi ho, main tumhe kya remind karna chahunga?",
+    options: [
+        "Tum enough ho",
+        "Tumhe har situation me perfect hone ki zarurat nahi",
+        "Tum meri nazar me important ho",
+        "Tumhe khud ko lose karne ki zarurat nahi"
+    ],
+    correct: 0
+},
+
+{
+    question: "Long distance ke bawajood mujhe relationship ko real kya feel karata hoga?",
+    options: [
+        "Calls",
+        "Video calls",
+        "Daily conversations",
+        "Emotional connection"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar mujhe tumhari koi baat hurt kare, to main ideally kya chahta hoon?",
+    options: [
+        "Tum mujhe samjho",
+        "Tum meri feelings ko seriously lo",
+        "Hum calmly baat karke solve karein",
+        "Ye teeno"
+    ],
+    correct: 3
+},
+
+{
+    question: "Tumhare according hamare relationship me sabse important promise kya hai?",
+    options: [
+        "Hamesha honest rehna",
+        "Ek dusre ko respect karna",
+        "Difficult times me saath rehna",
+        "Ek dusre ko kabhi intentionally alone feel na karana"
+    ],
+    correct: 2
+},
+
+{
+    question: "Agar tum future ke baare me insecure feel karo, main tumhe kya dena chahta hoon?",
+    options: [
+        "Reassurance",
+        "Patience",
+        "Trust",
+        "Ye feeling ki tum akeli nahi ho"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar hamare paas ek poora din saath spend karne ka chance ho, mujhe sabse zyada kya pasand aayega?",
+    options: [
+        "Bas tumhare saath baatein karna",
+        "Saath movie dekhna",
+        "Kahin ghoomne jaana",
+        "Kuch bhi, bas tum mere saath ho"
+    ],
+    correct: 3
+},
+
+{
+    question: "Tumhare according love ka sabse genuine form kya hai?",
+    options: [
+        "Kisi ko accept karna",
+        "Kisi ko samajhne ki koshish karna",
+        "Difficult times me bhi stay karna",
+        "Kisi ki happiness ko genuinely care karna"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar kabhi hamare beech distance emotionally difficult ho jaye, to main kya chahta hoon ki hum karein?",
+    options: [
+        "Ek dusre se openly baat karein",
+        "Apni feelings hide na karein",
+        "Ek dusre ko reassurance dein",
+        "Sab kuch milkar handle karein"
+    ],
+    correct: 3
+},
+
+{
+    question: "Agar tumhe hamare relationship ko sirf ek sentence me describe karna ho, tum kya choose karogi?",
+    options: [
+        "Two people trying to make distance feel smaller",
+        "A relationship built on trust and understanding",
+        "A connection that feels special even from far away",
+        "Two people choosing each other despite the distance"
+    ],
+    correct: 3
+}
+
+];
+
+
+const questionsContainer = document.getElementById("questions");
+
+
+questions.forEach((q, index) => {
+
+    const questionDiv = document.createElement("div");
+
+    questionDiv.className = "question";
+
+    let html = `<h3>${index + 1}. ${q.question}</h3>`;
+
+    q.options.forEach((option, optionIndex) => {
+
+        html += `
+            <label class="option">
+                <input
+                    type="radio"
+                    name="question${index}"
+                    value="${optionIndex}"
+                >
+                ${option}
+            </label>
+        `;
+
+    });
+
+    questionDiv.innerHTML = html;
+
+    questionsContainer.appendChild(questionDiv);
+
+});
+
+
+function submitQuiz() {
+
+    const name = document.getElementById("name").value.trim();
+
+    if (name === "") {
+        alert("Please enter your name.");
+        return;
+    }
+
+    let score = 0;
+
+    for (let i = 0; i < questions.length; i++) {
+
+        const selected =
+            document.querySelector(
+                `input[name="question${i}"]:checked`
+            );
+
+        if (!selected) {
+            alert(`Please answer Question ${i + 1}.`);
+            return;
+        }
+
+        if (Number(selected.value) === questions[i].correct) {
+            score++;
+        }
+
+    }
+
+
+    document.getElementById("quizCard").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("score").textContent =
+        `${score} / ${questions.length}`;
+
+
+    let message = "";
+
+    if (score >= 18) {
+        message = "You really understand our relationship.";
+    } else if (score >= 15) {
+        message = "You know us pretty well.";
+    } else if (score >= 10) {
+        message = "You still have a few things to discover about us.";
+    } else {
+        message = "Looks like we need a little more time together.";
+    }
+
+    document.getElementById("message").textContent = message;
+
+}
+
+</script>
+
+</body>
+</html>
